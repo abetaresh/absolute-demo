@@ -68,7 +68,7 @@ let read_job_mode file project _ =
 		duration = b;
 		resources_usage = []
 	}) in 
-	let mode = {mode with resources_usage = read_trailing_int_list file (List.length project.resources_idx)}
+	let mode = {mode with resources_usage = read_trailing_int_list file (List.length project.resources_idx)} in mode
 	
 (*the mode is a list with a range from 1 to prec.mode, for each element of that list we 
 read_job_mode where we get the mode_index, duration and resources_usage and asign the wheigts as the mode.duration
