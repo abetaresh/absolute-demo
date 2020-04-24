@@ -13,4 +13,4 @@
 (** Given a filename, parse its data into a RCPSP structure.
     The data is supposed to be formatted according to the SM format (PSPLIB).
     See also the [documentation](https://ptal.github.io/scheduling-data.html). *)
-val read_sm_file: string -> Rcpsp_data.rcpsp
+val read_sm_file: string -> Mrcpsp_data.mrcpsp

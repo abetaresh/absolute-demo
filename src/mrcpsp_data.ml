@@ -12,22 +12,26 @@ let check_resources_info r =
   else
     r
 
-type modes = {
+type mode = {
   mode_idx: int;
   duration: int;
   resources_usage: int list;
 }
-type precedence = {
-  job_index: int;
-  mode: int;
-  successors: int;
-  job_successors: int list;
-  weights: int list;
-}
 
 type job = {
   job_index: int;
-  mode: int list;
+  modes_num: int;
+  modes: mode list;
+}
+
+(* start1 + duration1 <= start2 *)
+(* start1 + duration1 <= start3 *)
+
+(* start<job_index> + weights[0] <= start<job_successors[0]> *)
+type precedence = {
+  job_index: int;
+  successors: int;
+  job_successors: int list;
 }
 
 type project = {
@@ -36,7 +40,6 @@ type project = {
   horizon: int;
   precedence_relations: precedence list;
   jobs: job list;
-  mode_idx: int list;
   resources_idx: int list;
 }
 
@@ -50,10 +53,8 @@ let map_projects f mrcpsp = { mrcpsp with projects = (List.map f mrcpsp.projects
 let number_of_resources mrcpsp = List.length mrcpsp.resources_capacities
 
 let compute_horizon project =
-  let horizon = List.fold_left (fun a j ->
-    let weights = List.flatten (List.map (fun (p:precedence) ->
-      if p.job_index = j.job_index then p.weights else []) project.precedence_relations) in
-    let max_dur = List.fold_left max j.duration weights in
+  let horizon = List.fold_left (fun a (j:job) ->
+    let max_dur = List.fold_left (fun d m -> max d m.duration) 0 j.modes in
     a + max_dur
     ) 0 project.jobs in
   {project with horizon = horizon}
