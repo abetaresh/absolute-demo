@@ -1,4 +1,4 @@
-(* Copyright 2020 Pierre Talbot
+(* Copyright 2019 Pierre Talbot
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
@@ -10,10 +10,14 @@
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
    Lesser General Public License for more details. *)
 
-open Sm
+open Core
+open Scanf
 
+let ignore_lines file n =
+  for _=1 to n do
+    ignore(bscanf file "%[^\n]\n" (fun _ -> ()))
+  done
 
-
-let _ =
-	let _data = read_sm_file "j102_2.mm" in ()
-
+let read_trailing_int_list file n =
+  let numbers = List.map (fun _ -> bscanf file " %d " (fun x->x)) (Tools.range 1 n) in
+  numbers

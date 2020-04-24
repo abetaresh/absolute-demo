@@ -1,4 +1,4 @@
-(* Copyright 2020 Pierre Talbot
+(* Copyright 2019 Pierre Talbot
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
@@ -10,10 +10,7 @@
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
    Lesser General Public License for more details. *)
 
-open Sm
-
-
-
-let _ =
-	let _data = read_sm_file "j102_2.mm" in ()
-
+(** Given a filename, parse its data into a RCPSP structure.
+    The data is supposed to be formatted according to the SM format (PSPLIB).
+    See also the [documentation](https://ptal.github.io/scheduling-data.html). *)
+val read_sm_file: string -> Rcpsp_data.rcpsp

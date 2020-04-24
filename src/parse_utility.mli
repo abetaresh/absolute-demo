@@ -1,4 +1,4 @@
-(* Copyright 2020 Pierre Talbot
+(* Copyright 2019 Pierre Talbot
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
@@ -10,10 +10,12 @@
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
    Lesser General Public License for more details. *)
 
-open Sm
+(** Parsing/utility functions that are common across formats (Patterson, SM, ProGen/max).  *)
 
+open Scanf
 
+(** Discards `n` lines from the input. *)
+val ignore_lines: Scanning.in_channel -> int -> unit
 
-let _ =
-	let _data = read_sm_file "j102_2.mm" in ()
-
+(** Read a list of `n` space separated integers. *)
+val read_trailing_int_list: Scanning.in_channel -> int -> int list
