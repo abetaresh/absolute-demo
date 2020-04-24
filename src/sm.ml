@@ -61,16 +61,17 @@ let read_precedence_relations file project =
   let precedence_relations = List.map (fun _ -> read_precedence file) (Tools.range 1 project.jobs_number) in
   { project with precedence_relations=precedence_relations}
 
-(*for every mode read its index, duration and get the resourse_usage list*)  
+(*for every mode read its index, duration and get the resourse_usage list*)
 let read_job_mode file project _ =
 	let mode = bscanf file "%d %d %d" (fun a b c ->{
 		mode_idx = a;
 		duration = b;
 		resources_usage = []
-	}) in 
-	let mode = {mode with resources_usage = read_trailing_int_list file (List.length project.resources_idx)}
-	
-(*the mode is a list with a range from 1 to prec.mode, for each element of that list we 
+	}) in
+  let resources_usage = read_trailing_int_list file (List.length project.resources_idx) in
+	{mode with resources_usage }
+
+(*the mode is a list with a range from 1 to prec.mode, for each element of that list we
 read_job_mode where we get the mode_index, duration and resources_usage and asign the wheigts as the mode.duration
 -- this happenes for every job index *)
 let read_job file project _ =
@@ -81,7 +82,7 @@ let read_job file project _ =
   let job = {job with mode = read_trailing_int_list file (List.length prec.mode)} in
   let precedence_relations = List.map (fun (prec:precedence) ->
     if prec.job_index = job.job_index then
-       mode = List.map (fun _ -> read_job_mode file) (Tools.range 1 prec.mode) in
+      let mode = List.map (fun _ -> read_job_mode file) (Tools.range 1 prec.mode) in
       {prec with weights=mode.duration}
     else prec
   ) project.precedence_relations in
